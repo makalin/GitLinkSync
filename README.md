@@ -1,12 +1,20 @@
 # GitLinkSync
 
-*A tool to extract GitHub user links from X posts and automate follow-back actions.*
+![GitLinkSync Logo](logo.png)
+
+*A tool to extract GitHub user links from X posts and automate follow-back actions, now with advanced automation, analytics, dashboard, CLI, and more!*
 
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [CLI Usage](#cli-usage)
+- [Web Dashboard](#web-dashboard)
+- [Scheduler](#scheduler)
+- [Notifications](#notifications)
+- [Analytics & Stats](#analytics--stats)
+- [Security](#security)
 - [Prerequisites](#prerequisites)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
@@ -17,10 +25,22 @@
 GitLinkSync is an innovative Python-based project designed to extract GitHub profile links from X posts (e.g., tweets like the one from @GithubProjects) and automate follow-back actions on GitHub. This tool addresses the challenge of connecting with developers in a JavaScript-disabled environment by leveraging server-side scraping and the GitHub API. Ideal for open-source enthusiasts and developers looking to build their network!
 
 ## Features
-- Extracts GitHub profile URLs from X posts using web scraping.
+- Extracts GitHub profile URLs from X posts using web scraping or the X API.
 - Automates follow-back actions on GitHub using the GitHub API.
+- Multi-account support for GitHub and X, with account rotation.
 - Handles JavaScript-disabled browser scenarios with server-side rendering.
 - Stores extracted links in a local database for future reference.
+- CLI utilities for scraping, following, exporting/importing, reviewing, and stats.
+- Web dashboard (Flask) to view links, follow status, and analytics.
+- Scheduler (APScheduler) for automated periodic scraping and follow-back.
+- Notification support (email, Telegram, Slack) for new links and follow-backs.
+- Link validation and enrichment (check if GitHub links are valid, fetch user info).
+- Advanced rate limit handling and retry logic.
+- Export/import utilities (CSV/JSON).
+- Structured logging and audit trail.
+- Manual review tool for approving/rejecting links before follow-back.
+- Statistics and analytics (number of links, follow-back rate, top posters, etc.).
+- Security: encrypt sensitive config values, environment variable support.
 - Compliant with GitHub API rate limits and X's terms of service.
 
 ## Installation
@@ -41,18 +61,58 @@ GitLinkSync is an innovative Python-based project designed to extract GitHub pro
 
 ## Usage
 1. Configure your GitHub API token and X credentials in the `config.json` file (see [Configuration](#configuration)).
-2. Run the script to scrape X posts and extract GitHub links:
+2. Run the CLI for scraping, following, exporting, importing, reviewing, and stats:
    ```bash
-   python main.py
+   python -m src.cli scrape
+   python -m src.cli follow
+   python -m src.cli export --format csv
+   python -m src.cli import --format json --file links.json
+   python -m src.cli review
+   python -m src.cli stats
    ```
-3. Review the extracted links in the `links.db` database or follow back automatically by enabling the follow-back feature:
+3. Start the web dashboard:
    ```bash
-   python follow_back.py
+   python -m src.dashboard
+   ```
+4. Start the scheduler for automated scraping/follow-back:
+   ```bash
+   python -m src.scheduler
    ```
 
-### Example Output
-- Extracted link: `https://github.com/thevinodpatidar`
-- Follow-back status: `Success` or `Rate limit exceeded`
+## CLI Usage
+- `scrape`: Scrape X posts and extract GitHub links.
+- `follow`: Follow back all users in the database.
+- `export`: Export links to CSV or JSON.
+- `import`: Import links from CSV or JSON.
+- `review`: Manually review and approve/reject links before follow-back.
+- `stats`: Show statistics and analytics.
+
+Example:
+```bash
+python -m src.cli export --format json --file mylinks.json
+```
+
+## Web Dashboard
+- Start with `python -m src.dashboard` and visit `http://localhost:5000`.
+- View all extracted links, follow status, and analytics in your browser.
+
+## Scheduler
+- Start with `python -m src.scheduler` to run scraping and follow-back jobs at regular intervals (default: scrape every 60 min, follow every 120 min).
+
+## Notifications
+- Configure email, Telegram, or Slack notifications in your custom scripts or extend `src/notifications.py`.
+- Get notified when new links are found or follow-backs are performed.
+
+## Analytics & Stats
+- View stats in the dashboard or via CLI:
+  - Total links
+  - Followed/unfollowed
+  - Follow-back rate
+  - (Extend for more analytics as needed)
+
+## Security
+- Sensitive config values can be encrypted using `src/security.py` (see code for details).
+- Environment variable support for secrets.
 
 ## Prerequisites
 - Python 3.8+
