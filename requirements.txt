@@ -2,4 +2,5 @@ requests
 beautifulsoup4
 flask
 apscheduler
-cryptography 
+cryptography
+psutil 

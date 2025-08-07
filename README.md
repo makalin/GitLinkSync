@@ -15,6 +15,7 @@
 - [Notifications](#notifications)
 - [Analytics & Stats](#analytics--stats)
 - [Security](#security)
+- [Advanced Tools](#advanced-tools)
 - [Prerequisites](#prerequisites)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
@@ -35,12 +36,16 @@ GitLinkSync is an innovative Python-based project designed to extract GitHub pro
 - Scheduler (APScheduler) for automated periodic scraping and follow-back.
 - Notification support (email, Telegram, Slack) for new links and follow-backs.
 - Link validation and enrichment (check if GitHub links are valid, fetch user info).
-- Advanced rate limit handling and retry logic.
+- Advanced rate limit handling and retry logic with exponential backoff.
 - Export/import utilities (CSV/JSON).
 - Structured logging and audit trail.
 - Manual review tool for approving/rejecting links before follow-back.
 - Statistics and analytics (number of links, follow-back rate, top posters, etc.).
 - Security: encrypt sensitive config values, environment variable support.
+- Data cleaning and deduplication utilities.
+- Backup and restore functionality.
+- Performance monitoring and system statistics.
+- Comprehensive error handling and recovery strategies.
 - Compliant with GitHub API rate limits and X's terms of service.
 
 ## Installation
@@ -86,10 +91,18 @@ GitLinkSync is an innovative Python-based project designed to extract GitHub pro
 - `import`: Import links from CSV or JSON.
 - `review`: Manually review and approve/reject links before follow-back.
 - `stats`: Show statistics and analytics.
+- `backup`: Manage database and configuration backups.
+- `validate`: Validate GitHub links in the database.
+- `clean`: Clean and deduplicate links.
+- `monitor`: Show system performance metrics.
+- `performance`: Generate comprehensive performance report.
 
 Example:
 ```bash
 python -m src.cli export --format json --file mylinks.json
+python -m src.cli backup --action create
+python -m src.cli validate
+python -m src.cli monitor
 ```
 
 ## Web Dashboard
@@ -113,6 +126,36 @@ python -m src.cli export --format json --file mylinks.json
 ## Security
 - Sensitive config values can be encrypted using `src/security.py` (see code for details).
 - Environment variable support for secrets.
+
+## Advanced Tools
+
+### Rate Limiting & Retry Logic
+- `src/rate_limiter.py`: Handles GitHub and X API rate limits with exponential backoff.
+- Automatic retry with configurable delays and maximum attempts.
+
+### Link Validation & Enrichment
+- `src/link_validator.py`: Validates GitHub links and fetches user information.
+- Enriches links with user bio, follower count, and repository information.
+
+### Multi-Account Support
+- `src/multi_account.py`: Manages multiple GitHub and X accounts.
+- Account rotation to avoid rate limits and distribute load.
+
+### Data Cleaning
+- `src/data_cleaner.py`: Normalizes URLs, removes duplicates, and filters valid links.
+- Text cleaning and link extraction from content.
+
+### Backup Management
+- `src/backup_manager.py`: Creates, lists, restores, and deletes backups.
+- Automatic backup rotation and metadata tracking.
+
+### Performance Monitoring
+- `src/performance_monitor.py`: Tracks execution times, memory usage, and API statistics.
+- Real-time system monitoring and performance reports.
+
+### Error Handling
+- `src/error_handler.py`: Comprehensive error handling with recovery strategies.
+- Error logging, retry decorators, and safe execution utilities.
 
 ## Prerequisites
 - Python 3.8+
